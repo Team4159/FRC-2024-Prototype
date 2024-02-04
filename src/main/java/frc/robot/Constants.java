@@ -146,4 +146,78 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    public static final class ShooterConstants {
+        // TODO: Change CAN ID 8 on rev hardware because it interferes with swerve
+        public static final int motor1ID = 8;
+        public static final int motor2ID = 12;
+        public static final int motor3ID = 23;
+        public static final int motor4ID = 22;
+        public static final int feederMotorID = 51;
+
+        public static enum ShooterState {
+            SHOOT(0.8, 0.4, 0.2),
+            REVERSE(-0.2, -0.2, -0.2),
+            FEED(0, 0, 0.2),
+            HANDOFF(0.4, 0.4, 0.2),
+            OFF(0, 0, 0);
+
+            public double speed1;
+            public double speed2;
+            public double speedFeeder;
+
+            private ShooterState(double speed1, double speed2, double speedFeeder) {
+                this.speed1 = speed1;
+                this.speed2 = speed2;
+                this.speedFeeder = speedFeeder;
+            }
+        }
+    }
+
+    public static class FeederConstants {
+        public static final int motorID = 2;
+
+        public static enum FeederState {
+            FEED(0.2),
+            OUTTAKE(-0.2),
+            OFF(0);
+
+            public double percentage;
+
+            private FeederState(double percentage) {
+                this.percentage = percentage;
+            }
+        }
+    }
+
+    public static class IntakeConstants {
+        public static final int motor1ID = 0;
+        public static final int motor2ID = 1;
+
+        public static enum IntakeState {
+            INTAKE(0.5),
+            OUTTAKE(-0.5),
+            OFF(0);
+
+            public double percentage;
+
+            private IntakeState(double percentage) {
+                this.percentage = percentage;
+            }
+        }
+    }
+
+    public static class JoystickConstants {
+        public static class Primary {
+            public static final int port = 0;
+
+            public static final int zeroGyroButton = 1;
+            public static final int robotCentricButton = 2;
+        }
+        public static class Secondary {
+            public static final int port = 1;
+
+            public static final int shooterButton = 1;
+        }
+    }
 }
