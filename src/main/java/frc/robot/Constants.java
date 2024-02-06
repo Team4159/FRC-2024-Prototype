@@ -217,7 +217,13 @@ public final class Constants {
         public static class Secondary {
             public static final int port = 1;
 
+            //change button layout for driver's preference
             public static final int shooterButton = 1;
+            public static final int shooterReverseButton = 7; 
+            public static final int intakeButton = 8;
+            public static final int feederButton = 9;
+            public static final int intakeFeedButton = 2;
+            public static final int outtakeFeedButton = 6;
         }
     }
 }

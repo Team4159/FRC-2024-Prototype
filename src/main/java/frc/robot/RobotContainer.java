@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.FeederConstants.FeederState;
+import frc.robot.Constants.IntakeConstants.IntakeState;
 import frc.robot.Constants.JoystickConstants.Primary;
 import frc.robot.Constants.JoystickConstants.Secondary;
 import frc.robot.Constants.ShooterConstants.ShooterState;
@@ -36,9 +38,20 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Shooter shooter = new Shooter();
+    private final Intake intake = new Intake();
+    private final Feeder feeder = new Feeder();
 
     /* Subsystem Buttons */
+    /* Intake / Feeeder */
+    private final JoystickButton intakeButton = new JoystickButton(secondary, Constants.JoystickConstants.Secondary.intakeButton);
+    private final JoystickButton feederButton = new JoystickButton(secondary, Constants.JoystickConstants.Secondary.feederButton);
+    private final JoystickButton intakeFeedButton = new JoystickButton(secondary, Constants.JoystickConstants.Secondary.intakeFeedButton);
+    private final JoystickButton outtakeFeedButton = new JoystickButton(secondary, Constants.JoystickConstants.Secondary.outtakeFeedButton);
+    
+    /* Shooter */
     private final JoystickButton shooterButton = new JoystickButton(secondary, Secondary.shooterButton);
+    private final JoystickButton shooterReverseButton = new JoystickButton(secondary, Secondary.shooterReverseButton);
+    //private final JoystickButton intakeFeedShootButton = new JoystickButton(secondary, Secondary.intakeFeedShootButton);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -69,6 +82,14 @@ public class RobotContainer {
         /* Subsystem Buttons */
         shooterButton.onTrue(new InstantCommand(() -> shooter.setState(ShooterState.SHOOT)))
                     .onFalse(new InstantCommand(() -> shooter.setState(ShooterState.OFF)));
+        shooterReverseButton.onTrue(new InstantCommand(() -> shooter.setState(ShooterState.REVERSE)))
+                            .onFalse(new InstantCommand(() -> shooter.setState(ShooterState.OFF)));
+        intakeButton.onTrue(new InstantCommand(() -> intake.setState(IntakeState.INTAKE)))
+                            .onFalse(new InstantCommand(() -> intake.setState(IntakeState.OFF)));
+        feederButton.onTrue(new InstantCommand(() -> feeder.setState(FeederState.FEED)))
+                            .onFalse(new InstantCommand(() -> feeder.setState(FeederState.OFF)));
+        intakeFeedButton.whileTrue(new IntakeFeed(intake, feeder, IntakeState.INTAKE, FeederState.FEED));
+        outtakeFeedButton.whileTrue(new IntakeFeed(intake, feeder, IntakeState.OUTTAKE, FeederState.OUTTAKE));
     }
 
     /**

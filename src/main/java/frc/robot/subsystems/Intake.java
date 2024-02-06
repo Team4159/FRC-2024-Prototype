@@ -1,27 +1,25 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants.IntakeState;
 
 public class Intake extends SubsystemBase {
-    // Prototype uses falcons, final design uses neo vortex
-    private TalonFX motor1;
-    private TalonFX motor2;
+    // Prototype also uses vortexes now
+    private CANSparkFlex motor1;
     private IntakeState intakeState;
 
     public Intake() {
-        motor1 = new TalonFX(Constants.IntakeConstants.motor1ID, Constants.drivetrainCANbusName);
-        motor2 = new TalonFX(Constants.IntakeConstants.motor2ID, Constants.drivetrainCANbusName);
+        motor1 = new CANSparkFlex(Constants.IntakeConstants.motor1ID, MotorType.kBrushless);
         intakeState = IntakeState.OFF;
     }
 
     @Override
     public void periodic() {
         motor1.set(intakeState.percentage);
-        motor2.set(-intakeState.percentage);
     }
 
     public void setState(IntakeState state) {
@@ -30,6 +28,5 @@ public class Intake extends SubsystemBase {
 
     public void stopMotors() {
         motor1.stopMotor();
-        motor2.stopMotor();
     }
 }
